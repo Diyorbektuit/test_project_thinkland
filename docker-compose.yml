@@ -33,12 +33,12 @@ services:
 
   web:
     build: .
-    command: bash -c "python manage.py migrate && gunicorn core.wsgi:application --bind 0.0.0.0:8000"
+    command: bash -c "python manage.py migrate && gunicorn core.wsgi:application --bind 0.0.0.0:8001"
     volumes:
       - /var/www/test_project_thinkland/static:/app/staticfiles
       - /var/www/test_project_thinkland/media:/app/media
     ports:
-      - "8000:8000"
+      - "8001:8001"
     depends_on:
       - db
       - elasticsearch

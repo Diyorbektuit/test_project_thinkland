@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django_elasticsearch_dsl import Document, Index, fields
 from django_elasticsearch_dsl.registries import registry
 from .models import Product
@@ -13,7 +15,7 @@ class ProductDocument(Document):
     id = fields.IntegerField()
     title = fields.TextField(fields={'raw': fields.KeywordField()})
     description = fields.TextField()
-    price = fields.FloatField(attr='price_as_float')
+    price = fields.FloatField(attr='prepare_price')
     category = fields.ObjectField(properties={
         'id': fields.IntegerField(),
         'title': fields.TextField(fields={'raw': fields.KeywordField()}),
@@ -33,3 +35,11 @@ class ProductDocument(Document):
     class Django:
         model = Product
         fields = ['created_at', 'updated_at']
+
+    def prepare_price(self, instance):
+        if instance.price is None:
+            return None
+        try:
+            return float(instance.price)
+        except (ValueError, TypeError, Decimal.InvalidOperation):
+            return None

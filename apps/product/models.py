@@ -38,6 +38,4 @@ class Product(BaseModel):
         verbose_name_plural = 'Products'
         ordering = ('-created_at', )
 
-    @property
-    def price_as_float(self):
-        return float(self.price) if self.price is not None else None
+

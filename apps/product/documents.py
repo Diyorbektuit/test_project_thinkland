@@ -15,7 +15,7 @@ class ProductDocument(Document):
     id = fields.IntegerField()
     title = fields.TextField(fields={'raw': fields.KeywordField()})
     description = fields.TextField()
-    price = fields.FloatField(attr='prepare_price')
+    price = fields.IntegerField()
     category = fields.ObjectField(properties={
         'id': fields.IntegerField(),
         'title': fields.TextField(fields={'raw': fields.KeywordField()}),
@@ -35,11 +35,3 @@ class ProductDocument(Document):
     class Django:
         model = Product
         fields = ['created_at', 'updated_at']
-
-    def prepare_price(self, instance):
-        if instance.price is None:
-            return None
-        try:
-            return float(instance.price)
-        except (ValueError, TypeError, Decimal.InvalidOperation):
-            return None

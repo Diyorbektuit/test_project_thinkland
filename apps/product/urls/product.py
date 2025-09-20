@@ -6,6 +6,6 @@ from apps.product.views.product import ProductListView, CategoryListView, Produc
 urlpatterns = [
     path("products/", ProductListView.as_view()),
     path("categories/", CategoryListView.as_view()),
-    path("products/<int:id>/", ProductRetrieveView.as_view()),
-    path("categories/<int:id>/", CategoryRetrieveView.as_view()),
+    path("products/<uuid:id>/", ProductRetrieveView.as_view()),
+    path("categories/<uuid:id>/", CategoryRetrieveView.as_view()),
     ]

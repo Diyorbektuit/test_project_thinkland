@@ -2,7 +2,6 @@ from django_elasticsearch_dsl import Document, Index, fields
 from django_elasticsearch_dsl.registries import registry
 from .models import Product
 
-# Elasticsearch indeksi
 product_index = Index('products')
 product_index.settings(
     number_of_shards=1,
@@ -14,7 +13,7 @@ class ProductDocument(Document):
     id = fields.IntegerField()
     title = fields.TextField(fields={'raw': fields.KeywordField()})
     description = fields.TextField()
-    price = fields.FloatField()
+    price = fields.FloatField(attr='price_as_float')
     category = fields.ObjectField(properties={
         'id': fields.IntegerField(),
         'title': fields.TextField(fields={'raw': fields.KeywordField()}),

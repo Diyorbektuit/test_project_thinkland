@@ -13,9 +13,9 @@ class BothHttpAndHttpsSchemaGenerator(OpenAPISchemaGenerator):
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="INextLYNK Backend API",
+        title="Test Thinkland Backend API",
         default_version="v1",
-        description="INextLYNK Name Backend",
+        description="Test Thinkland Name Backend",
         terms_of_service="https://www.google.com/policies/terms/",
     ),
     public=True,

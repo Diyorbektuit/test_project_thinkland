@@ -7,7 +7,8 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
 
 from apps.product.models import Product, Category
-from apps.product.serializers.profile import CategorySerializerForPostPatch, ProductSerializerForPostPatch
+from apps.product.serializers.profile import (CategorySerializerForPost, CategorySerializerForPatch,
+                                              ProductSerializerForPost, ProductSerializerForPatch)
 from apps.product.serializers.product import CategorySerializerForGet, ProductSerializerForGet
 from apps.product.filters import ProductFilter
 from apps.globals.permissions import IsOwner
@@ -23,9 +24,14 @@ class CategoryViewSet(ModelViewSet):
         return Category.objects.filter(user=self.request.user).select_related("user")
 
     def get_serializer_class(self):
-        if self.request.method == "GET":
-            return CategorySerializerForGet
-        return CategorySerializerForPostPatch
+        serializer_classes = {
+            "list": CategorySerializerForPost,
+            "create": CategorySerializerForPost,
+            "partial_update": CategorySerializerForPatch,
+            "retrieve": CategorySerializerForPatch,
+            "destroy": CategorySerializerForGet,
+        }
+        return serializer_classes.get(self.action, CategorySerializerForPost)
 
 
 class ProductViewSet(ModelViewSet):
@@ -83,9 +89,14 @@ class ProductViewSet(ModelViewSet):
         return Product.objects.filter(id__in=ids, user=self.request.user).select_related("category", "user")
 
     def get_serializer_class(self):
-        if self.request.method == "GET":
-            return ProductSerializerForGet
-        return ProductSerializerForPostPatch
+        serializer_classes = {
+            "list": ProductSerializerForGet,
+            "create": ProductSerializerForPost,
+            "partial_update": ProductSerializerForPatch,
+            "retrieve": ProductSerializerForPatch,
+            "destroy": ProductSerializerForGet,
+        }
+        return serializer_classes.get(self.action, ProductSerializerForGet)
 
 
 

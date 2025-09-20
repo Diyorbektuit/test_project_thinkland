@@ -64,6 +64,19 @@ class ProductListView(generics.ListAPIView):
         return Product.objects.filter(id__in=ids)
 
 
+class ProductRetrieveView(generics.RetrieveAPIView):
+    queryset = Product.objects.all().select_related("category", "user")
+    serializer_class = ProductSerializerForGet
+    lookup_field = "id"
+
+
 class CategoryListView(generics.ListAPIView):
     queryset = Category.objects.all().select_related("user")
     serializer_class = CategorySerializerForGet
+
+
+class CategoryRetrieveView(generics.RetrieveAPIView):
+    queryset = Category.objects.all().select_related("user")
+    serializer_class = CategorySerializerForGet
+    lookup_field = "id"
+
